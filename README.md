@@ -1,1 +1,3 @@
 # Flutter-works
+-Repo is aimed at keeping track of my flutter journey as i attempt to enter into the mobile dev tech space.
+-Will bd utilizing resources such as the book "Flutter apprentice". So I'll be working with it and tracking my progress...
