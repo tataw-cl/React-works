@@ -1,8 +1,14 @@
+//We strat the server using "npm run dev"
 import { useState } from "react";
+interface Props {
+  items: string[];
+  heading: string;
+  onSelectItem: (item: string) => void;
+}
+//{items:[], heading: string}
 
 // import { MouseEvent } from "react";//relevant only with the onlick event handler
-function ListGroup() {
-  let items = ["New York", "Paris", "Cameroon", "Lagos", "London"];
+function ListGroup({ items, heading, onSelectItem }: Props) {
   //hook
   const [SelectedIndex, setSelectedIndex] = useState(-1);
   //{     extra example where this is used
@@ -17,7 +23,7 @@ function ListGroup() {
   //   const handleClick = (event: MouseEvent) => console.log(event);      }
   return (
     <>
-      <h1>List</h1>
+      <h1>{heading}</h1>
       {items.length == 0 && <p>No items found</p>}
       <ul className="list-group">
         {items.map((items, index) => (
@@ -30,6 +36,7 @@ function ListGroup() {
             key={items}
             onClick={() => {
               setSelectedIndex(index);
+              onSelectItem(items);
             }}
           >
             {items}
