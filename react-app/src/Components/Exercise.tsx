@@ -1,11 +1,15 @@
 import { ReactNode } from "react";
 interface Props {
   children: ReactNode;
+  onnClick: () => void;
+  //we can set different values that the color parameter can hold by using '|'.
+  // e.g we can have color?: 'primary'|'secondary'|'danger'
+  color?: string;
 }
-const Buttons = ({ children }: Props) => {
+const Buttons = ({ children, onnClick, color = "primary" }: Props) => {
   return (
     <div>
-      <button type="button" className="btn btn-primary">
+      <button type="button" className={"btn btn-" + color} onClick={onnClick}>
         {children}
       </button>
       {/* Implementing the other types of bootstrap buttons
