@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Balance = ({ float: bal }) => {
+export const Balance = ({ bal }) => {
   return (
     <div>
       <h3>Your Balance</h3>

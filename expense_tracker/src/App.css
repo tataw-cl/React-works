@@ -1,5 +1,5 @@
-.body {
-  background-color: #f0f0f0;
+body {
+  background-color: #eaf6ea;
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
@@ -12,4 +12,67 @@
   align-items: center;
   /* justify-content: center; */
   height: 100vh;
+}
+
+.spendings {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  justify-content: space-around;
+  width: 15%;
+}
+
+.expense {
+  border-left: 2px solid rgb(255, 255, 255);
+  text-align: center;
+  width: 50%;
+}
+
+.income {
+  border-right: 2px solid rgb(255, 255, 255);
+  text-align: center;
+  width: 50%;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px;
+}
+
+#text {
+  height: 25px;
+  border-radius: 5px;
+}
+
+#amount {
+  height: 25px;
+  border-radius: 5px;
+}
+
+.btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.trans {
+  display: flex;
+  background-color: rgb(255, 255, 255);
+  flex-direction: row;
+  width: 100%;
+  text-align: center;
+  justify-content: space-between;
+  margin-right: 200px;
+  border: 2px solid rgb(238, 221, 221);
+  height: 40px;
+  padding: 1px;
+  margin-bottom: 20px;
 }
