@@ -79,22 +79,46 @@ body {
   margin-bottom: 20px;
 }
 
-.list {
-  border-radius: 4px;
+.wrapper {
   align-items: center;
-  width: 17%;
+  justify-content: center;
+  width: 25%;
   margin-bottom: 1%;
-  background-color: white;
-  height: 4%;
-  padding-left: 0.4%;
-  padding-top: 0.4%;
+  height: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.price {
-  text-align: right;
+.plus {
+  border-right: 8px solid rgb(0, 255, 0);
+  background-color: white;
+  width: 100%;
+  height: 4vh;
+  border-radius: 4px;
+  padding-left: 0.9%;
+}
+
+.minus {
   border-right: 8px solid rgb(255, 0, 0);
-  padding-right: 1.5%;
-  margin-left: 48%;
+  background-color: white;
+  width: 100%;
+  height: 4vh;
+  border-radius: 4px;
+  padding-left: 0.9%;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 20px;
+  height: 100%;
+  /* Set a minimum width */
+  max-width: 100%;
+  /* Allow the div to grow up to 100% of its container */
 }
 
 .delete-btn {
@@ -111,10 +135,10 @@ body {
   /* Adjust as needed */
   font-weight: bold;
   /* Bold text */
-  margin-left: 5%;
 }
 
 .delete-btn:hover {
   background-color: rgb(255, 104, 104);
+  color: white;
   /* Darker red when hovering */
 }

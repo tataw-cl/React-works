@@ -1,15 +1,17 @@
 import React from "react";
 
-export const Transactions = ({ transactions }) => {
+export const Transactions = ({ text, cost, removeTransaction, type }) => {
   return (
     <>
-      <div id="list" className="list">
-        {transactions.map((text, index) => (
-          <div key={index}>
-            {text.text} <span className="price">$-{text.amount}</span>
-            <button className="delete-btn">X</button>
+      <div className="wrapper">
+        <div className={type}>
+          <div className="content">
+            <span> {text} </span> <span>${cost}</span>
           </div>
-        ))}
+        </div>
+        <button className="delete-btn" onClick={removeTransaction}>
+          X
+        </button>
       </div>
     </>
   );

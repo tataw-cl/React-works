@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-export const New = ({}) => {
+export const New = ({ onHandleAddTransaction }) => {
+  // let onAddTransaction = {
+  //   text1: "",
+  //   amount1: 0,
+  // };
+  // const [trans, setTrans] = useState([]);
   const [text, setText] = useState("");
   const [amount, setAmount] = useState(0);
 
@@ -12,7 +17,7 @@ export const New = ({}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(`Text: ${text}, Amount: ${amount}`);
-    onAddTransaction(text, amount);
+    onHandleAddTransaction(text, amount);
   };
   return (
     <div>
@@ -32,7 +37,7 @@ export const New = ({}) => {
         <div className="form-control">
           <label htmlFor="amount">
             Amount <br />
-            (negative - expense, positive - income)
+            (Put a negative(-) for expense, positive for income)
           </label>
           <input
             type="number"
