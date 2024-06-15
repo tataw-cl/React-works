@@ -10,24 +10,37 @@ const SignUp = () => {
   const passwordRef = useRef();
   const ConfirmPasswordRef = useRef();
   const { signup } = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSignUp(event) {
+  async function handleSignUp(event) {
     // Add your sign up logic here
     event.preventDefault();
-    signup(email, password);
+    if (password !== ConfirmPassword) {
+      return setError("passwords do not match");
+    }
+    try {
+      setError("");
+      setLoading(true);
+      await signup(email, password);
+    } catch {
+      setError("Failed to create account");
+    }
     console.log(email, password, ConfirmPassword);
+    setLoading(false);
   }
 
   return (
     <div>
       <h2>Sign Up</h2>
-      <form className="form">
+      {error && <alert>*{error}</alert>}
+      <form className="form" onSubmit={handleSignUp}>
         <label>Email:</label>
         <input
           type="email"
           value={email}
           ref={emailRef}
-          onChange={(e) => setEmail(e.current.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <label>Password:</label>
         <input
@@ -42,7 +55,7 @@ const SignUp = () => {
           ref={ConfirmPasswordRef}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <button type="button" onClick={handleSignUp}>
+        <button type="button" onClick={handleSignUp} disabled={loading}>
           Sign Up
         </button>
         <p>
