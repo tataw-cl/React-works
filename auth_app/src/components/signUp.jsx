@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useRef } from "react";
 import { useAuth } from "./contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +7,6 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const ConfirmPasswordRef = useRef();
   const { signup } = useAuth();
   const [error1, setError1] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,21 +41,18 @@ const SignUp = () => {
           <input
             type="email"
             value={email}
-            ref={emailRef}
             onChange={(e) => setEmail(e.target.value)}
           />
           <label>Password:</label>
           <input
             type="password"
             value={password}
-            ref={passwordRef}
             onChange={(e) => setPassword(e.target.value)}
           />
           <label>Confirm password</label>
           <input
             type="password"
             value={ConfirmPassword}
-            ref={ConfirmPasswordRef}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <button
