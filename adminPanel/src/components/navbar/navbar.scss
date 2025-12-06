@@ -1,0 +1,82 @@
+.navbar{
+    height: 50px;
+    border-bottom: 0.5px solid rgb(237, 233, 233);
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+
+    .wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 20px;
+
+        .search{
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            padding: 5px;
+            border: 0.5px solid lightgrey;
+
+            input{
+                border: none;
+                background-color: transparent;
+                outline: none;
+                font-size: 14px;
+                color: #555;
+
+                &::placeholder{
+                    font-size: 12px;
+                }
+            }
+
+            .icon{
+                color: #999;
+                font-size: 18px;
+            }
+        }
+
+        .items{
+            display: flex;
+            align-items: center;
+
+            .item{
+                display: flex;
+                align-items: center;
+                margin: 20px;
+                position: relative;
+
+                .icon{
+                    font-size: 18px;
+                    color: #555;
+                    margin-right: 5px;
+                }
+
+                .avatar{
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                .counter{
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background-color: #6439ff;
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: bold;
+                    position: absolute;
+                    top: -9px;
+                    right: -9px;
+                }
+            }
+        }
+    }
+}
