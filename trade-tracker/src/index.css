@@ -248,6 +248,105 @@ nav a.active {
   gap: 10px;
 }
 
+/* Summary tile body adjustment */
+.summary-card .tile-head {
+  font-size: 1.875rem; /* text-3xl */
+  line-height: 2.25rem;
+  font-weight: 700; /* font-bold */
+  color: var(--color-white);
+  margin-bottom: 2rem; /* mb-8 */
+  text-align: center;
+  justify-content: center;
+}
+.S-tile-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* grid-cols-2 */
+  gap: 1.5rem; /* gap-6 */
+  margin-bottom: 2.5rem; /* mb-10 */
+}
+
+.S-property {
+  background-color: rgba(255, 255, 255, 0.05); /* bg-white/5 */
+  border: 1px solid rgba(255, 255, 255, var(--item-border-alpha)); /* border-white/10 */
+
+  /* layout/style */
+  border-radius: 0.75rem; /* rounded-xl */
+  padding: 1.5rem; /* p-6 */
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* gap-2 */
+
+  /* backdrop-blur-sm */
+  backdrop-filter: blur(4px);
+
+  /* hover/transition */
+  transition-property: background-color; /* transition-colors */
+  transition-duration: 150ms;
+}
+
+.S-property .property-label {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+  color: var(--text);
+}
+.S-property .property-value {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 800; /* font-extrabold */
+  color: var(--accent);
+}
+.S-property .property-right {
+  justify-content: center;
+}
+.S-property:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* bg-white/10 on hover */
+}
+
+.summary-overall {
+  /* background/border */
+  background-image: linear-gradient(
+    to bottom right,
+    rgba(16, 185, 129, 0.2),
+    rgba(6, 182, 212, 0.2)
+  ); /* bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 */
+  border: 2px solid rgba(52, 211, 153, 0.5); /* border-2 border-emerald-400/50 */
+
+  /* layout/style */
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 2.5rem; /* p-10 */
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1); /* shadow-xl equivalent */
+
+  /* backdrop-blur-sm */
+  backdrop-filter: blur(4px);
+}
+
+/* .overall-label {
+  font-size: 6rem;
+  line-height: 1; 
+  font-weight: 700; 
+  transition: all 500ms ease;
+} */
+
+.overall-message {
+  font-size: 1.25rem; /* text-xl */
+  line-height: 1.75rem;
+  margin-bottom: 1rem; /* mb-4 */
+  text-transform: uppercase; /* uppercase */
+  letter-spacing: 0.05em; /* tracking-wider */
+  font-weight: 700; /* font-bold */
+}
+
+.overall-percentage {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent);
+  padding: 6px 10px;
+  margin-bottom: 8px;
+}
+
 /* Property rows inside tiles */
 .property {
   display: flex;
@@ -310,55 +409,72 @@ nav a.active {
 
 /* Toggle button */
 .property-toggle {
+  /* New track/knob button (Tailwind-like sample) */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
+  position: relative;
+  width: 64px; /* similar to w-16 */
+  height: 36px; /* similar to h-9 */
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.06); /* slate-700/50 style */
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: transform 300ms ease, box-shadow 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* hover and active micro-interactions */
+.property-toggle:hover {
+  transform: scale(1.05);
+}
+.property-toggle:active {
+  transform: scale(0.95);
+}
+
+/* track element that contains the knob */
+.toggle-track-el {
+  display: inline-block;
+  width: 56px; /* inner track width */
+  height: 28px; /* inner track height */
+  border-radius: 999px;
+  position: relative;
+  background: rgba(100, 116, 139, 0.12); /* muted slate track */
+  box-shadow: inset 0 1px 2px rgba(2, 6, 23, 0.25);
+  transition: background-color 220ms ease;
+}
+
+/* knob element */
+.toggle-knob-el {
+  display: inline-block;
+  width: 28px; /* h-7 w-7 -> 28px */
   height: 28px;
   border-radius: 999px;
-  border: 1px solid var(--glass);
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.18s;
-  padding: 0;
-  box-sizing: border-box;
-  align-items: center;
-  /* keep toggle overall size fixed; only the knob (circle) color changes */
-  .property-toggle.on {
-    background: transparent;
-    color: var(--muted);
-    border-color: var(--glass);
-  }
+  background: #ffffff; /* default white knob */
+  position: absolute;
+  top: 0;
+  left: 2px; /* translate-x-1 starting offset */
+  transform: translateX(0);
+  box-shadow: 0 6px 18px rgba(2, 8, 23, 0.28);
+  transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms;
+}
 
-  /* svg sizing inside toggle */
-  .toggle-icon {
-    width: 88px;
-    height: 20%;
-    display: block;
-  }
-  .toggle-track {
-    stroke: rgba(255, 255, 255, 0.12);
-  }
+/* checked/on state moves knob to the right and changes knob color */
+.property-toggle.on .toggle-knob-el {
+  transform: translateX(
+    28px
+  ); /* move by track inner width - knob width - padding ~28px */
+  background: var(--accent);
+}
 
-  /* knob defaults */
-  .toggle-knob {
-    fill: var(--muted);
-    transition: fill 0.16s ease, transform 0.12s ease;
-  }
-
-  /* when checked, only color the knob */
-  .property-toggle.on .toggle-knob {
-    fill: var(--accent);
-  }
-  min-width: 5%;
-  height: 1%;
-  border-radius: 25px;
-  border: 1px solid var(--glass);
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.18s;
+/* slight change to track when on (subtle) */
+.property-toggle.on .toggle-track-el {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 180, 180, 0.12),
+    rgba(23, 162, 184, 0.12)
+  );
 }
 .property-toggle.on {
   /* container stays visually unchanged; only the knob recolors */
