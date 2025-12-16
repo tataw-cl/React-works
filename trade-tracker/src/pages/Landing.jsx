@@ -6,7 +6,7 @@ import Tile from "../components/Tile";
 import Summary from "../components/Summary";
 
 export default function Landing() {
-  const tiles = [
+  const [tiles, setTiles] = React.useState([
     {
       name: "WEEKLY",
       percentageValue: 75,
@@ -46,25 +46,10 @@ export default function Landing() {
         { label: "Break & Retest/Head & Shoulders Pattern", value: "+10%" },
       ],
     },
-    {
-      name: "2H, 1H, 30m",
-      percentageValue: 30,
-      properties: [
-        { label: "Trend", value: "+10%" },
-        { label: "Touching EMA", value: "+5%" },
-        { label: "Break & Retest/Head & Shoulders Pattern", value: "+10%" },
-      ],
-    },
-
-    {
-      name: "ENTRY SIGNAL",
-      percentageValue: 50,
-      properties: [
-        { label: "SOS", value: "+10%" },
-        { label: "Engulfing Candlestick (30m, 1H, 2H, 4H)", value: "+10%" },
-      ],
-    },
-
+    { name: "4H", percentageValue: 60 },
+    { name: "2H, 1H, 30m", percentageValue: 30 },
+    { name: "ENTRY SIGNAL", percentageValue: 50 },
+    { name: "Stop Loss Placement", percentageValue: null },
     {
       name: "Stop Loss Placement",
       percentageValue: null,
@@ -73,7 +58,15 @@ export default function Landing() {
         { label: "Below Recent Structure", value: "" },
       ],
     },
-  ];
+  ]);
+
+  const handleTileChange = (index, newPercentage) => {
+    setTiles((prev) => {
+      const copy = prev.slice();
+      copy[index] = { ...copy[index], percentageValue: newPercentage };
+      return copy;
+    });
+  };
 
   return (
     <div className="landing-container">
@@ -86,6 +79,7 @@ export default function Landing() {
             name={t.name}
             percentageValue={t.percentageValue}
             properties={t.properties}
+            onPercentageChange={(newTotal) => handleTileChange(i, newTotal)}
           />
         ))}
       </div>

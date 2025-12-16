@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 
-function Property({ label, value }) {
-  const [checked, setChecked] = useState(false);
+function Property({ label, value, checked: checkedProp, onChange }) {
+  // controlled when checkedProp is provided; otherwise local state
+  const [internalChecked, setInternalChecked] = useState(false);
+  const checked =
+    typeof checkedProp === "boolean" ? checkedProp : internalChecked;
 
   return (
     <div className="property">
@@ -16,7 +19,19 @@ function Property({ label, value }) {
         <button
           aria-pressed={checked}
           className={`property-toggle ${checked ? "on" : "off"}`}
-          onClick={() => setChecked((s) => !s)}
+          onClick={() => {
+            if (typeof checkedProp === "boolean") {
+              // controlled: notify parent
+              onChange && onChange(!checked);
+            } else {
+              // uncontrolled: update local state and notify parent
+              setInternalChecked((s) => {
+                const next = !s;
+                onChange && onChange(next);
+                return next;
+              });
+            }
+          }}
           title={checked ? "On" : "Off"}
         >
           {/* track */}
