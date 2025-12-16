@@ -7,25 +7,92 @@ import Summary from "../components/Summary";
 
 export default function Landing() {
   const tiles = [
-    { name: "Sample Tile", percentageValue: 75 },
-    { name: "Another Tile", percentageValue: 45 },
-    { name: "Third Tile", percentageValue: 60 },
-    { name: "Fourth Tile", percentageValue: 30 },
+    {
+      name: "WEEKLY",
+      percentageValue: 75,
+      properties: [
+        { label: "Trend", value: "+10%" },
+        { label: "At AOI/Rejected", value: "+10%" },
+        { label: "Touching EMA", value: "+5%" },
+        { label: "Round Psychological Level", value: "+5%" },
+        { label: "Rejection From Previous Structure", value: "+10%" },
+        { label: "Candlestick Rejection From AOI", value: "+10%" },
+        { label: "Break & Retest/Head & Shoulders Pattern", value: "+10%" },
+      ],
+    },
+    {
+      name: "DAILY",
+      percentageValue: 45,
+      properties: [
+        { label: "Trend", value: "+10%" },
+        { label: "At AOI/Rejected", value: "+10%" },
+        { label: "Touching EMA", value: "+5%" },
+        { label: "Round Psychological Level", value: "+5%" },
+        { label: "Rejection From Previous Structure", value: "+10%" },
+        { label: "Candlestick Rejection From AOI", value: "+10%" },
+        { label: "Break & Retest/Head & Shoulders Pattern", value: "+10%" },
+      ],
+    },
+    {
+      name: "4H",
+      percentageValue: 60,
+      properties: [
+        { label: "Trend", value: "+10%" },
+        { label: "At AOI/Rejected", value: "+10%" },
+        { label: "Touching EMA", value: "+5%" },
+        { label: "Round Psychological Level", value: "+5%" },
+        { label: "Rejection From Previous Structure", value: "+10%" },
+        { label: "Candlestick Rejection From AOI", value: "+10%" },
+        { label: "Break & Retest/Head & Shoulders Pattern", value: "+10%" },
+      ],
+    },
+    {
+      name: "2H, 1H, 30m",
+      percentageValue: 30,
+      properties: [
+        { label: "Trend", value: "+10%" },
+        { label: "Touching EMA", value: "+5%" },
+        { label: "Break & Retest/Head & Shoulders Pattern", value: "+10%" },
+      ],
+    },
+
+    {
+      name: "ENTRY SIGNAL",
+      percentageValue: 50,
+      properties: [
+        { label: "SOS", value: "+10%" },
+        { label: "Engulfing Candlestick (30m, 1H, 2H, 4H)", value: "+10%" },
+      ],
+    },
+
+    {
+      name: "Stop Loss Placement",
+      percentageValue: null,
+      properties: [
+        { label: "ATR Distance", value: "" },
+        { label: "Below Recent Structure", value: "" },
+      ],
+    },
   ];
 
   return (
     <div className="landing-container">
       <Header />
 
+      <div className="tile-container">
+        {tiles.map((t, i) => (
+          <Tile
+            key={i}
+            name={t.name}
+            percentageValue={t.percentageValue}
+            properties={t.properties}
+          />
+        ))}
+      </div>
+
       {/* Summary shows per-tile percentages and overall average */}
       <div style={{ margin: "0 8% 16px" }}>
         <Summary tiles={tiles} />
-      </div>
-
-      <div className="tile-container">
-        {tiles.map((t, i) => (
-          <Tile key={i} name={t.name} percentageValue={t.percentageValue} />
-        ))}
       </div>
 
       <Footer />

@@ -199,7 +199,7 @@ nav a.active {
     rgba(11, 68, 111, 0.65),
     rgba(7, 70, 104, 0.55)
   );
-  border-radius: 5%;
+  border-radius: 1rem;
   padding: 18px 18px 18px 28px;
   color: var(--text);
   border: 1px solid rgba(255, 255, 255, 0.04);
@@ -249,6 +249,16 @@ nav a.active {
 }
 
 /* Summary tile body adjustment */
+.summary-card {
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 2%;
+  border: 1px solid rgba(52, 211, 153, 0.2); /* border-emerald-400/20 */
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 2rem;
+  box-shadow: 0 12px 40px rgba(2, 8, 23, 0.5); /* shadow-lg equivalent */
+  backdrop-filter: blur(6px); /* backdrop-blur-md */
+}
 .summary-card .tile-head {
   font-size: 1.875rem; /* text-3xl */
   line-height: 2.25rem;

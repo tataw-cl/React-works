@@ -1,7 +1,21 @@
 import React from "react";
 import Property from "./Property";
 
-function Tile({ name, percentageValue }) {
+function Tile({ name, percentageValue, properties = [], children }) {
+  // default properties to keep backward compatibility
+  const defaultProperties = [
+    { label: "Trend", value: "+10%" },
+    { label: "At AOI/Rejected", value: "+10%" },
+    { label: "Touching EMA", value: "+5%" },
+    { label: "Round Psychological Level", value: "+5%" },
+    { label: "Rejection From Previous Structure", value: "+10%" },
+    { label: "Candlestick Rejection From AOI", value: "+10%" },
+    { label: "Break & Retest/Head & Shoulders Pattern", value: "+10%" },
+  ];
+
+  const propsToRender =
+    properties && properties.length ? properties : defaultProperties;
+
   return (
     <div className="tile">
       <div className="tile-head">
@@ -10,18 +24,12 @@ function Tile({ name, percentageValue }) {
       </div>
 
       <div className="tile-body">
-        <Property
-          label="Today"
-          value={`+${(percentageValue * 0.1).toFixed(2)}%`}
-        />
-        <Property
-          label="This Week"
-          value={`+${(percentageValue * 0.5).toFixed(2)}%`}
-        />
-        <Property
-          label="This Month"
-          value={`+${(percentageValue * 0.8).toFixed(2)}%`}
-        />
+        {propsToRender.map((p, i) => (
+          <Property key={i} label={p.label} value={p.value} />
+        ))}
+
+        {/* allow consumers to pass additional custom children if needed */}
+        {children}
       </div>
     </div>
   );
