@@ -189,6 +189,22 @@ nav a.active {
   transform: translateY(-1px);
 }
 
+/* Brand section below header */
+.brand {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.brand h2 {
+  font-size: 2rem;
+  margin: 0;
+  color: var(--text);
+}
+.brand p {
+  font-size: 1rem;
+  margin: 4px 0 0 0;
+  color: var(--muted);
+}
+
 /* Cards / tiles - visually distinct */
 .tile {
   margin-left: 8%;
@@ -524,6 +540,58 @@ nav a.active {
 .btn-ghost {
   font-weight: 600;
   font-size: 0.95rem;
+}
+
+/* Summary save button styles */
+.summary-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.save-btn {
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #031517;
+  border: none;
+  box-shadow: 0 8px 24px rgba(0, 180, 180, 0.12);
+  transition: transform 160ms, box-shadow 160ms;
+}
+.save-btn:active {
+  transform: translateY(1px) scale(0.995);
+}
+.save-status {
+  font-size: 0.95rem;
+}
+.save-status.ok {
+  color: #34d399; /* green */
+}
+.save-status.err {
+  color: #f87171; /* red */
+}
+
+/* Auth forms */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+}
+.form input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text);
+}
+.form-error {
+  color: #f87171;
+  margin-top: 6px;
+}
+
+.page-main {
+  padding: 24px 8%;
 }
 
 /* Tables */

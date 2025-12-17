@@ -6,10 +6,11 @@ import Tile from "../components/Tile";
 import Summary from "../components/Summary";
 
 export default function Landing() {
+  // state to hold tile data
   const [tiles, setTiles] = React.useState([
     {
       name: "WEEKLY",
-      percentageValue: 75,
+      percentageValue: 0,
       properties: [
         { label: "Trend", value: "+10%" },
         { label: "At AOI/Rejected", value: "+10%" },
@@ -22,7 +23,7 @@ export default function Landing() {
     },
     {
       name: "DAILY",
-      percentageValue: 45,
+      percentageValue: 0,
       properties: [
         { label: "Trend", value: "+10%" },
         { label: "At AOI/Rejected", value: "+10%" },
@@ -35,7 +36,7 @@ export default function Landing() {
     },
     {
       name: "4H",
-      percentageValue: 60,
+      percentageValue: 0,
       properties: [
         { label: "Trend", value: "+10%" },
         { label: "At AOI/Rejected", value: "+10%" },
@@ -46,20 +47,34 @@ export default function Landing() {
         { label: "Break & Retest/Head & Shoulders Pattern", value: "+10%" },
       ],
     },
-    { name: "4H", percentageValue: 60 },
-    { name: "2H, 1H, 30m", percentageValue: 30 },
-    { name: "ENTRY SIGNAL", percentageValue: 50 },
-    { name: "Stop Loss Placement", percentageValue: null },
     {
-      name: "Stop Loss Placement",
+      name: "2H, 1H, 30m",
+      percentageValue: 0,
+      properties: [
+        { label: "Trend", value: "+10%" },
+        { label: "Touching EMA", value: "+5%" },
+        { label: "Break & Retest/Head & Shoulders Pattern", value: "+10%" },
+      ],
+    },
+    {
+      name: "ENTRY SIGNAL",
+      percentageValue: 0,
+      properties: [
+        { label: "SOS", value: "+10%" },
+        { label: "Engulfing Candlestick(30m,1H,2H,4H)", value: "+10%" },
+      ],
+    },
+    {
+      name: "Stop Loss  Take Profit",
       percentageValue: null,
       properties: [
-        { label: "ATR Distance", value: "" },
-        { label: "Below Recent Structure", value: "" },
+        { label: "Stop Loss", value: "" },
+        { label: "Take Profit", value: "" },
       ],
     },
   ]);
 
+  // handler to update tile percentage value
   const handleTileChange = (index, newPercentage) => {
     setTiles((prev) => {
       const copy = prev.slice();
@@ -71,6 +86,11 @@ export default function Landing() {
   return (
     <div className="landing-container">
       <Header />
+
+      <div className="brand">
+        <h2>Trade Checklist</h2>
+        <p>Evaluate your trades across multiple timeframes</p>
+      </div>
 
       <div className="tile-container">
         {tiles.map((t, i) => (

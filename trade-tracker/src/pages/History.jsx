@@ -2,38 +2,29 @@ import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { tradeServices } from "../services/tradeServices";
 
 export default function History() {
-  // Sample data — replace with real API/state later
-  const trades = [
-    {
-      id: 1,
-      symbol: "AAPL",
-      side: "Buy",
-      size: 10,
-      price: 172.5,
-      pnl: 45.0,
-      date: "2025-12-01",
-    },
-    {
-      id: 2,
-      symbol: "TSLA",
-      side: "Sell",
-      size: 2,
-      price: 210.0,
-      pnl: -32.5,
-      date: "2025-11-28",
-    },
-    {
-      id: 3,
-      symbol: "BTC-USD",
-      side: "Buy",
-      size: 0.01,
-      price: 42000,
-      pnl: 120.0,
-      date: "2025-11-15",
-    },
-  ];
+  const { user } = useAuth();
+  const [trades, setTrades] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetch = async () => {
+      if (!user) return setLoading(false);
+      setLoading(true);
+      try {
+        const data = await tradeServices.getTradesByUser(user.id);
+        setTrades(data || []);
+      } catch (err) {
+        console.error("Failed to load trades:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, [user]);
 
   const totalPnL = trades.reduce((sum, t) => sum + (t.pnl || 0), 0);
 
@@ -64,32 +55,30 @@ export default function History() {
         </section>
 
         <section className="trades-list">
-          <table className="trades-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Symbol</th>
-                <th>Side</th>
-                <th>Size</th>
-                <th>Price</th>
-                <th>P&amp;L</th>
-              </tr>
-            </thead>
-            <tbody>
-              {trades.map((t) => (
-                <tr key={t.id}>
-                  <td>{t.date}</td>
-                  <td>{t.symbol}</td>
-                  <td>{t.side}</td>
-                  <td>{t.size}</td>
-                  <td>{t.price}</td>
-                  <td className={t.pnl >= 0 ? "pnl-positive" : "pnl-negative"}>
-                    {t.pnl}
-                  </td>
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            <table className="trades-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Data</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {trades.map((t) => (
+                  <tr key={t.id}>
+                    <td>{new Date(t.created_at).toLocaleString()}</td>
+                    <td>
+                      <pre style={{ whiteSpace: "pre-wrap" }}>
+                        {JSON.stringify(t.tiles, null, 2)}
+                      </pre>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </section>
 
         <div className="footer-spacer" />

@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 function Header() {
+  const { user, signOut } = useAuth();
   return (
     <header>
       <nav>
@@ -81,7 +83,17 @@ function Header() {
           </ul>
         </div>
         <div className="nav-right">
-          <button className="btn btn-ghost">
+          {user && (
+            <div style={{ marginRight: 8, color: "var(--muted)" }}>
+              {user.email}
+            </div>
+          )}
+          <button
+            className="btn btn-ghost"
+            onClick={async () => {
+              await signOut();
+            }}
+          >
             <svg
               className="icon icon-sm"
               viewBox="0 0 24 24"
@@ -110,7 +122,7 @@ function Header() {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>LogOut</span>
+            <span>{user ? "Log out" : "Log out"}</span>
           </button>
         </div>
       </nav>
