@@ -26,7 +26,18 @@ export default function History() {
     fetch();
   }, [user]);
 
-  const totalPnL = trades.reduce((sum, t) => sum + (t.pnl || 0), 0);
+  const totalPnL = trades.reduce((sum, t) => sum + (Number(t.pnl) || 0), 0);
+
+  const handleDelete = async (id) => {
+    if (!confirm("Delete this trade? This cannot be undone.")) return;
+    try {
+      await tradeServices.deleteTradeById(id);
+      setTrades((s) => s.filter((x) => x.id !== id));
+    } catch (err) {
+      console.error("Delete failed", err);
+      alert("Failed to delete trade. See console for details.");
+    }
+  };
 
   return (
     <div className="page-container history-page">
@@ -54,30 +65,51 @@ export default function History() {
           </div>
         </section>
 
-        <section className="trades-list">
+        <section className="trades-list modern-list">
           {loading ? (
             <div>Loading...</div>
+          ) : trades.length === 0 ? (
+            <div className="empty-state">No saved trades yet.</div>
           ) : (
-            <table className="trades-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Data</th>
-                </tr>
-              </thead>
-              <tbody>
-                {trades.map((t) => (
-                  <tr key={t.id}>
-                    <td>{new Date(t.created_at).toLocaleString()}</td>
-                    <td>
-                      <pre style={{ whiteSpace: "pre-wrap" }}>
-                        {JSON.stringify(t.tiles, null, 2)}
-                      </pre>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="trade-cards">
+              {trades.map((t) => (
+                <article key={t.id} className="trade-card">
+                  <div className="trade-card-head">
+                    <div className="trade-date">
+                      {new Date(t.created_at).toLocaleString()}
+                    </div>
+                    <div className="trade-actions">
+                      <button
+                        className="btn btn-ghost"
+                        onClick={() => handleDelete(t.id)}
+                        title="Delete trade"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="trade-body">
+                    <div className="trade-overall">
+                      Overall: {Number(t.overall || 0).toFixed(1)}%
+                    </div>
+                    <div className="tiles-preview">
+                      {(t.tiles || []).slice(0, 6).map((tile, i) => (
+                        <span key={i} className="tile-tag">
+                          {tile.name}: {Number(tile.percentageValue || 0)}%
+                        </span>
+                      ))}
+                      {(t.tiles || []).length > 6 && (
+                        <span className="tile-tag">
+                          +{(t.tiles || []).length - 6} more
+                        </span>
+                      )}
+                    </div>
+                    {t.notes && <div className="trade-notes">{t.notes}</div>}
+                  </div>
+                </article>
+              ))}
+            </div>
           )}
         </section>
 

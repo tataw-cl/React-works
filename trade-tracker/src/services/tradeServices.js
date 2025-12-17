@@ -84,35 +84,43 @@ export const tradeServices = {
 
     return data;
   },
-
-  //Fuction to save trades with profile check
-
+  // Ensure a profile exists for userId (optional) then create the trade
   saveTradeWithProfileCheck: async (userId, tradePayload) => {
-    // 1. Check if profile exists
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("id", userId)
-      .single();
-
-    // 2. If profile is missing, create it on the fly
-    if (profileError && profileError.code === "PGRST116") {
-      // PGRST116 is "No rows found"
-      console.log("Profile missing. Creating one now...");
-      const { error: createError } = await supabase
+    try {
+      // Try to find an existing profile row
+      const { data: profile, error: selErr } = await supabase
         .from("profiles")
-        .insert([{ id: userId, username: `user_${userId.slice(0, 5)}` }]); // Default username
+        .select("id")
+        .eq("id", userId)
+        .single();
 
-      if (createError)
-        throw new Error("Could not create profile: " + createError.message);
+      if (!profile) {
+        // Insert a minimal profile record if none exists
+        const { data: ins, error: insErr } = await supabase
+          .from("profiles")
+          .insert([
+            { id: userId, username: `user_${String(userId).slice(0, 5)}` },
+          ]);
+        if (insErr) console.warn("Could not create profile:", insErr);
+      }
+    } catch (err) {
+      // non-fatal: continue to attempt creating trade
+      console.warn("Profile check failed (continuing):", err);
     }
 
-    // 3. Now save the trade
-    const { data, error: tradeError } = await supabase
+    // now save trade; merge user_id to payload to be safe
+    const { data, error } = await supabase
       .from("trades")
       .insert([{ ...tradePayload, user_id: userId }]);
 
-    if (tradeError) throw tradeError;
+    if (error) {
+      console.error(
+        "Error creating trade in saveTradeWithProfileCheck:",
+        error
+      );
+      throw error;
+    }
+
     return data;
   },
 };

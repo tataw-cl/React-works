@@ -6,8 +6,8 @@ import { useAuth } from "../contexts/AuthContext";
 // Props: tiles: Array<{ name: string, percentageValue: number }>
 // Renders individual summary lines and overall percentage + message
 export default function Summary({ tiles = [] }) {
-  const total = tiles.reduce((s, t) => s + Number(t.percentageValue || 0), 0);
-  const overall = tiles.length ? total : 0;
+  const total = tiles.reduce((s, t) => s + Number(t?.percentageValue || 0), 0);
+  const overall = tiles && tiles.length ? total : 0;
 
   let message = "Neutral performance";
   // Simple thresholds for message
@@ -26,6 +26,8 @@ export default function Summary({ tiles = [] }) {
     try {
       if (!user) throw new Error("You must be signed in to save a trade.");
 
+      if (!tiles || tiles.length === 0) throw new Error("No tiles to save.");
+
       const payload = {
         user_id: user.id,
         tiles: tiles.map((t) => ({
@@ -39,18 +41,19 @@ export default function Summary({ tiles = [] }) {
       console.log("Saving trade payload:", payload);
       await tradeServices.saveTradeWithProfileCheck(user.id, payload);
       setStatus({ ok: true, msg: "Trade saved successfully!" });
-      // Optional: Reset UI state here
     } catch (err) {
       console.error("Database Error:", err);
       let userFriendlyMsg = "Something went wrong. Please try again.";
-      if (err.code === "23505")
-        userFriendlyMsg = "This trade ID already exists.";
-      else if (err.code === "42P01")
-        userFriendlyMsg = "Configuration error: Table not found.";
-      else if (err.message && err.message.includes("fetch"))
+      const code = err?.code || err?.status || null;
+      const msg = err?.message || err?.error_description || String(err);
+      if (code === "23505") userFriendlyMsg = "This trade already exists.";
+      else if (code === "42P01")
+        userFriendlyMsg = "Database table not found (trades).";
+      else if (msg && msg.toLowerCase().includes("network"))
         userFriendlyMsg = "Network error. Check your internet connection.";
-      else if (err.message && err.message.includes("signed in"))
+      else if (msg && msg.toLowerCase().includes("signed in"))
         userFriendlyMsg = "You must be signed in to save.";
+      else if (msg) userFriendlyMsg = msg;
       setStatus({ ok: false, msg: userFriendlyMsg });
     } finally {
       setSaving(false);
@@ -94,7 +97,10 @@ export default function Summary({ tiles = [] }) {
           <button
             className="btn btn-primary save-btn"
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || !tiles || tiles.length === 0}
+            title={
+              !tiles || tiles.length === 0 ? "No tiles to save" : "Save summary"
+            }
           >
             {saving ? "Saving..." : "Save summary"}
           </button>

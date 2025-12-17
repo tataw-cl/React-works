@@ -83,47 +83,62 @@ function Header() {
           </ul>
         </div>
         <div className="nav-right">
-          {user && (
-            <div style={{ marginRight: 8, color: "var(--muted)" }}>
-              {user.email}
+          {user ? (
+            <>
+              <div style={{ marginRight: 8, color: "var(--muted)" }}>
+                {user.email}
+              </div>
+              <button
+                className="btn btn-ghost"
+                onClick={async () => {
+                  try {
+                    await signOut();
+                  } catch (err) {
+                    console.error("Sign out failed:", err);
+                  }
+                }}
+              >
+                <svg
+                  className="icon icon-sm"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden
+                >
+                  <path
+                    d="M16 17l5-5-5-5"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M21 12H9"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M9 19H6a2 2 0 01-2-2V7a2 2 0 012-2h3"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>Log out</span>
+              </button>
+            </>
+          ) : (
+            <div style={{ display: "flex", gap: 8 }}>
+              <Link to="/login" className="btn btn-ghost">
+                Sign in
+              </Link>
+              <Link to="/signup" className="btn btn-primary">
+                Sign up
+              </Link>
             </div>
           )}
-          <button
-            className="btn btn-ghost"
-            onClick={async () => {
-              await signOut();
-            }}
-          >
-            <svg
-              className="icon icon-sm"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden
-            >
-              <path
-                d="M16 17l5-5-5-5"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M21 12H9"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M9 19H6a2 2 0 01-2-2V7a2 2 0 012-2h3"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>{user ? "Log out" : "Log out"}</span>
-          </button>
         </div>
       </nav>
     </header>

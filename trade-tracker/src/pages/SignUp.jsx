@@ -5,7 +5,6 @@ import { useAuth } from "../contexts/AuthContext";
 export default function SignUp() {
   const { signUp, user } = useAuth();
   const navigate = useNavigate();
-  const [userName, setUserName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState(null);
@@ -18,7 +17,7 @@ export default function SignUp() {
     e.preventDefault();
     setError(null);
     try {
-      await signUp(email, password, userName);
+      await signUp(email, password);
       navigate("/landing");
     } catch (err) {
       setError(err.message || String(err));
@@ -30,13 +29,6 @@ export default function SignUp() {
       <main className="page-main">
         <h2>Create account</h2>
         <form onSubmit={onSubmit} className="form">
-          <label>
-            UserName
-            <input
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </label>
           <label>
             Email
             <input value={email} onChange={(e) => setEmail(e.target.value)} />
