@@ -96,7 +96,31 @@ export default function History() {
                     <div className="tiles-preview">
                       {(t.tiles || []).slice(0, 6).map((tile, i) => (
                         <span key={i} className="tile-tag">
-                          {tile.name}: {Number(tile.percentageValue || 0)}%
+                          {tile.name === "Stop Loss & Take Profit" ||
+                          tile.name === "stop loss & take profit" ? (
+                            <>
+                              <strong>SL</strong>
+                              <span
+                                className={`status-icon ${
+                                  tile.stopLoss ? "on" : "off"
+                                }`}
+                              >
+                                {tile.stopLoss ? "✓" : "×"}
+                              </span>
+                              <strong style={{ marginLeft: 6 }}>TP</strong>
+                              <span
+                                className={`status-icon ${
+                                  tile.takeProfit ? "on" : "off"
+                                }`}
+                              >
+                                {tile.takeProfit ? "✓" : "×"}
+                              </span>
+                            </>
+                          ) : (
+                            `${tile.name}: ${Number(
+                              tile.percentageValue || 0
+                            )}%`
+                          )}
                         </span>
                       ))}
                       {(t.tiles || []).length > 6 && (

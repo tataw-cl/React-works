@@ -3,15 +3,19 @@ import React from "react";
 const Footer = ({
   company = "Your Company",
   links = [
-    { label: "Home", href: "/" },
+    { label: "Home", href: "/landing" },
     { label: "About", href: "/about" },
     { label: "Privacy", href: "/privacy" },
     { label: "Terms", href: "/terms" },
   ],
   social = [
     { label: "Twitter", href: "https://twitter.com", icon: "twitter" },
-    { label: "GitHub", href: "https://github.com", icon: "github" },
-    { label: "LinkedIn", href: "https://linkedin.com", icon: "linkedin" },
+    { label: "GitHub", href: "https://github.com/tataw-cl", icon: "github" },
+    {
+      label: "LinkedIn",
+      href: "https://linkedin.com/tataw-clarkson",
+      icon: "linkedin",
+    },
   ],
 }) => {
   const year = new Date().getFullYear();

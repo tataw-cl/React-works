@@ -409,7 +409,7 @@ nav a.active {
 .trade-card {
   background: linear-gradient(
     180deg,
-    rgba(10, 20, 30, 0.6),
+    rgba(13, 81, 148, 0.6),
     rgba(8, 18, 26, 0.5)
   );
   border: 1px solid rgba(255, 255, 255, 0.04);
@@ -457,6 +457,26 @@ nav a.active {
   color: var(--muted);
   font-size: 0.9rem;
   margin-top: 6px;
+}
+
+/* status icon used for Stop Loss / Take Profit */
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+.status-icon.on {
+  background: rgba(16, 185, 129, 0.14);
+  color: #10b981;
+}
+.status-icon.off {
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
 }
 
 .empty-state {
@@ -647,8 +667,8 @@ nav a.active {
 .form input {
   padding: 8px 10px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.212);
+  background: rgba(171, 118, 118, 0.02);
   color: var(--text);
 }
 .form-error {
@@ -658,6 +678,14 @@ nav a.active {
 
 .page-main {
   padding: 24px 8%;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 24, 39, 0.12),
+    rgba(7, 24, 39, 0.06)
+  );
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  box-shadow: var(--shadow);
 }
 
 /* Tables */

@@ -65,7 +65,7 @@ export default function Landing() {
       ],
     },
     {
-      name: "Stop Loss  Take Profit",
+      name: "Stop Loss & Take Profit",
       percentageValue: null,
       properties: [
         { label: "Stop Loss", value: "" },
@@ -79,6 +79,15 @@ export default function Landing() {
     setTiles((prev) => {
       const copy = prev.slice();
       copy[index] = { ...copy[index], percentageValue: newPercentage };
+      return copy;
+    });
+  };
+
+  // handler to update tile properties (checked flags)
+  const handlePropertiesChange = (index, updatedProperties) => {
+    setTiles((prev) => {
+      const copy = prev.slice();
+      copy[index] = { ...copy[index], properties: updatedProperties };
       return copy;
     });
   };
@@ -100,6 +109,7 @@ export default function Landing() {
             percentageValue={t.percentageValue}
             properties={t.properties}
             onPercentageChange={(newTotal) => handleTileChange(i, newTotal)}
+            onPropertiesChange={(updated) => handlePropertiesChange(i, updated)}
           />
         ))}
       </div>

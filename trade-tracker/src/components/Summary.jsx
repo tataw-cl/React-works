@@ -27,14 +27,53 @@ export default function Summary({ tiles = [] }) {
       if (!user) throw new Error("You must be signed in to save a trade.");
 
       if (!tiles || tiles.length === 0) throw new Error("No tiles to save.");
+      // determine stop/take flags from the Stop Loss tile (if present)
+      const stopTile = (tiles || []).find(
+        (x) => String(x.name).trim().toLowerCase() === "stop loss & take profit"
+      );
+      const stopFlag = !!(
+        stopTile?.stopLoss ||
+        (stopTile?.properties || []).find((p) =>
+          String(p.label).toLowerCase().includes("stop loss")
+        )?.checked
+      );
+      const takeFlag = !!(
+        stopTile?.takeProfit ||
+        (stopTile?.properties || []).find((p) =>
+          String(p.label).toLowerCase().includes("take profit")
+        )?.checked
+      );
 
       const payload = {
         user_id: user.id,
-        tiles: tiles.map((t) => ({
-          name: t.name,
-          percentageValue: Number(t.percentageValue || 0),
-        })),
+        tiles: tiles.map((t) => {
+          if (
+            String(t.name).trim().toLowerCase() === "stop loss & take profit"
+          ) {
+            const stop = (t.properties || []).find((p) =>
+              String(p.label).toLowerCase().includes("stop loss")
+            );
+            const take = (t.properties || []).find((p) =>
+              String(p.label).toLowerCase().includes("take profit")
+            );
+            return {
+              name: t.name,
+              stopLoss: !!stop?.checked,
+              takeProfit: !!take?.checked,
+            };
+          }
+
+          return {
+            name: t.name,
+            percentageValue:
+              t.percentageValue === null || t.percentageValue === undefined
+                ? 0
+                : Number(t.percentageValue || 0),
+          };
+        }),
         overall: Number(overall || 0),
+        stop_loss: stopFlag,
+        take_profit: takeFlag,
         created_at: new Date().toISOString(),
       };
 
@@ -74,7 +113,50 @@ export default function Summary({ tiles = [] }) {
                 <div className="property-label">{t.name}</div>
               </div>
               <div className="property-right">
-                <div className={`property-value on`}>{t.percentageValue}%</div>
+                {String(t.name).trim().toLowerCase() ===
+                "stop loss & take profit" ? (
+                  <div className="property-value on">
+                    <span>Stop Loss</span>
+                    <span
+                      className={`status-icon ${
+                        (t.properties || []).find((p) =>
+                          String(p.label).toLowerCase().includes("stop loss")
+                        )?.checked
+                          ? "on"
+                          : "off"
+                      }`}
+                      aria-hidden
+                    >
+                      {(t.properties || []).find((p) =>
+                        String(p.label).toLowerCase().includes("stop loss")
+                      )?.checked
+                        ? "✓"
+                        : "×"}
+                    </span>
+
+                    <span style={{ marginLeft: 8 }}>Take Profit</span>
+                    <span
+                      className={`status-icon ${
+                        (t.properties || []).find((p) =>
+                          String(p.label).toLowerCase().includes("take profit")
+                        )?.checked
+                          ? "on"
+                          : "off"
+                      }`}
+                      aria-hidden
+                    >
+                      {(t.properties || []).find((p) =>
+                        String(p.label).toLowerCase().includes("take profit")
+                      )?.checked
+                        ? "✓"
+                        : "×"}
+                    </span>
+                  </div>
+                ) : (
+                  <div className={`property-value on`}>
+                    {t.percentageValue}%
+                  </div>
+                )}
               </div>
             </div>
           ))}

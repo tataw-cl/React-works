@@ -7,6 +7,7 @@ export default function Tile({
   properties = [],
   children,
   onPercentageChange,
+  onPropertiesChange,
 }) {
   const defaultProperties = [
     { label: "Trend", value: "+10%" },
@@ -23,10 +24,12 @@ export default function Tile({
 
   // track checked state per property index
   const [checkedMap, setCheckedMap] = React.useState(() =>
-    propsToRender.map(() => false)
+    propsToRender.map((p) => !!p.checked)
   );
   const [computedTotal, setComputedTotal] = React.useState(() =>
-    Number(initialPercentage || 0)
+    initialPercentage === null || initialPercentage === undefined
+      ? null
+      : Number(initialPercentage || 0)
   );
 
   // helper to parse value like "+12%" or "-3%" into number 12 or -3
@@ -37,6 +40,13 @@ export default function Tile({
   };
 
   const recompute = (nextCheckedMap) => {
+    // For the Stop Loss tile we don't compute a percentage total
+    if (String(name).trim().toLowerCase() === "stop loss & take profit") {
+      setComputedTotal(null);
+      onPercentageChange && onPercentageChange(null);
+      return;
+    }
+
     const total = nextCheckedMap.reduce((sum, checked, idx) => {
       if (!checked) return sum;
       return sum + parsePercent(propsToRender[idx].value);
@@ -50,6 +60,20 @@ export default function Tile({
       const copy = prev.slice();
       copy[index] = next;
       recompute(copy);
+
+      // inform parent about updated properties (include checked flags)
+      if (onPropertiesChange) {
+        const updated = propsToRender.map((p, i) => ({
+          ...p,
+          checked: !!copy[i],
+        }));
+        try {
+          onPropertiesChange(updated);
+        } catch (e) {
+          // ignore parent errors
+        }
+      }
+
       return copy;
     });
   };
@@ -64,7 +88,11 @@ export default function Tile({
     <div className="tile">
       <div className="tile-head">
         <div className="tile-name">{name}</div>
-        <div className="tile-value">{computedTotal}%</div>
+        <div className="tile-value">
+          {computedTotal !== null && computedTotal !== undefined
+            ? `${computedTotal}%`
+            : ""}
+        </div>
       </div>
 
       <div className="tile-body">
